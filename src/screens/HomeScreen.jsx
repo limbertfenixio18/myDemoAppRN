@@ -3,6 +3,7 @@ import { StatusBar, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import { UsuarioContext } from "../context/usuario_context";
 import getUsers from "../services/users_service";
+import { getUsuario } from "../storage/usuario_storage";
 import { mainStyles } from "../styles/button_styles";
 import colors from "../styles/colors";
 import { styles } from "../styles/styles";
@@ -13,6 +14,12 @@ export default function HomeScreen(props) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    getUsuario().then((user) => {
+      if (user) {
+        loginAction({ type: "ingreso", data: user });
+      }
+    });
+
     getUsers().then(
       (res) => {
         setUsers(res);
